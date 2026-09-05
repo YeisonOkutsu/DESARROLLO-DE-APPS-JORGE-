@@ -1,0 +1,63 @@
+<section class="catalog-header">
+  <h1>🛸 Rick &amp; Morty — Catálogo de Personajes</h1>
+</section>
+
+@if (loading) {
+  <div class="state-container">
+    <div class="spinner"></div>
+    <p>Cargando personajes...</p>
+  </div>
+}
+
+@if (errorMessage) {
+  <div class="state-container error">
+    <p>⚠️ {{ errorMessage }}</p>
+    <button class="retry-btn" (click)="fetchCharacters()">Reintentar</button>
+  </div>
+}
+
+@if (!loading && !errorMessage) {
+  <div class="grid">
+    @for (char of characters; track char.id) {
+      <div class="card" [class.killed]="estaMuerto(char.id)">
+
+        <div class="card-image-wrapper">
+          <img
+            [src]="char.image"
+            [alt]="char.name"
+            loading="lazy"
+            [class.grayscale]="estaMuerto(char.id)"
+          />
+          @if (estaMuerto(char.id)) {
+            <div class="dead-overlay">✕</div>
+          }
+        </div>
+
+        <div class="card-body">
+          <h2 class="char-name">{{ char.name }}</h2>
+
+          <p class="char-status">
+            <span class="status-dot" [ngClass]="getStatusClass(char.status)"></span>
+            {{ char.status }} — {{ char.species }}
+          </p>
+
+          <p class="char-location">
+            <span class="label">Última ubicación:</span>
+            {{ char.location.name }}
+          </p>
+
+          @if (!estaMuerto(char.id)) {
+            <button class="kill-btn" (click)="matarPersonaje(char.id)">
+              💀 Matar
+            </button>
+          }
+
+          @if (estaMuerto(char.id)) {
+            <p class="killed-label">☠️ Eliminado</p>
+          }
+        </div>
+
+      </div>
+    }
+  </div>
+}
