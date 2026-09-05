@@ -1,0 +1,29 @@
+﻿<div class="container">
+  <h2>💾 Ejercicio 2 — Persistencia con localStorage</h2>
+  <p class="subtitle">Las tareas se guardan en el navegador y sobreviven al recargar la página.</p>
+
+  <div class="form-row">
+    <input
+      type="text"
+      [(ngModel)]="nuevaTarea"
+      placeholder="Nueva tarea..."
+      (keyup.enter)="agregarTarea()"
+      class="input-tarea"
+    />
+    <button (click)="agregarTarea()" class="btn btn-add">Agregar</button>
+  </div>
+
+  <div *ngIf="tareas.length === 0" class="empty">No hay tareas. ¡Agrega una!</div>
+
+  <ul class="lista" *ngIf="tareas.length > 0">
+    <li *ngFor="let tarea of tareas; let i = index" class="item">
+      <span>{{ i + 1 }}. {{ tarea }}</span>
+      <button (click)="eliminarTarea(i)" class="btn btn-del">Eliminar</button>
+    </li>
+  </ul>
+
+  <div *ngIf="tareas.length > 0" class="footer">
+    <button (click)="borrarTodo()" class="btn btn-clear">🗑️ Borrar todo</button>
+    <small>{{ tareas.length }} tarea(s) guardada(s) en localStorage</small>
+  </div>
+</div>

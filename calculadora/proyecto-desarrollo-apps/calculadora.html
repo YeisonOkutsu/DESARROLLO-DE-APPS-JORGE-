@@ -1,0 +1,363 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calculadora</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      font-family: "Segoe UI", system-ui, sans-serif;
+      padding: 24px;
+    }
+
+    .wrapper {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+      max-width: 860px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 24px;
+      padding: 36px 32px;
+      width: 360px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+    }
+
+    .card h1 {
+      color: #e2e8f0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 28px;
+      letter-spacing: -0.5px;
+    }
+
+    .card h1 span { color: #818cf8; }
+
+    label {
+      display: block;
+      color: #94a3b8;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 6px;
+    }
+
+    input[type="number"], select {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1.5px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.07);
+      color: #e2e8f0;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="number"]:focus, select:focus {
+      border-color: #818cf8;
+      background: rgba(129,140,248,0.1);
+    }
+
+    input[type="number"]::placeholder { color: #475569; }
+
+    select option { background: #1e293b; color: #e2e8f0; }
+
+    .select-wrapper { position: relative; }
+    .select-wrapper::after {
+      content: "&#9662;";
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #818cf8;
+      pointer-events: none;
+    }
+
+    .field { margin-bottom: 18px; }
+
+    .btn-calc {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #6366f1, #818cf8);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: transform 0.15s, box-shadow 0.15s;
+      letter-spacing: 0.3px;
+    }
+
+    .btn-calc:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(99,102,241,0.45);
+    }
+
+    .result-box {
+      margin-top: 24px;
+      background: rgba(99,102,241,0.12);
+      border: 1.5px solid rgba(99,102,241,0.3);
+      border-radius: 14px;
+      padding: 18px 20px;
+      text-align: center;
+      min-height: 68px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .result-label {
+      color: #94a3b8;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 4px;
+    }
+
+    .result-value {
+      color: #a5b4fc;
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      word-break: break-all;
+    }
+
+    .result-value.error { color: #f87171; font-size: 1rem; font-weight: 600; }
+
+    .history-card {
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 24px;
+      padding: 28px 24px;
+      width: 340px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.35);
+      display: flex;
+      flex-direction: column;
+      max-height: 520px;
+    }
+
+    .history-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .history-header h2 { color: #e2e8f0; font-size: 1rem; font-weight: 700; }
+
+    .btn-clear {
+      background: rgba(239,68,68,0.15);
+      border: 1px solid rgba(239,68,68,0.3);
+      color: #f87171;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-clear:hover { background: rgba(239,68,68,0.28); }
+
+    .history-list {
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-right: 4px;
+    }
+
+    .history-list::-webkit-scrollbar { width: 4px; }
+    .history-list::-webkit-scrollbar-thumb { background: rgba(129,140,248,0.3); border-radius: 4px; }
+
+    .history-item {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 12px 14px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .history-item .expr { color: #94a3b8; font-size: 0.82rem; margin-bottom: 4px; }
+    .history-item .res  { color: #a5b4fc; font-size: 1.1rem; font-weight: 700; }
+    .history-item .res.err { color: #f87171; font-size: 0.85rem; }
+
+    .op-badge {
+      display: inline-block;
+      background: rgba(99,102,241,0.2);
+      color: #818cf8;
+      border-radius: 6px;
+      padding: 1px 6px;
+      font-weight: 700;
+    }
+
+    .history-empty {
+      color: #475569;
+      font-size: 0.85rem;
+      text-align: center;
+      margin: auto;
+      padding: 24px 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <!-- CALCULADORA -->
+  <div class="card">
+    <h1>Calcula<span>dora</span></h1>
+
+    <div class="field">
+      <label for="num1">Numero 1</label>
+      <input type="number" id="num1" placeholder="Ej: 12.5" step="any"/>
+    </div>
+
+    <div class="field">
+      <label for="num2">Numero 2</label>
+      <input type="number" id="num2" placeholder="Ej: 4" step="any"/>
+    </div>
+
+    <div class="field">
+      <label for="op">Operacion</label>
+      <div class="select-wrapper">
+        <select id="op">
+          <option value="sumar">&#10133; Sumar</option>
+          <option value="restar">&#10134; Restar</option>
+          <option value="multiplicar" selected>&#10006; Multiplicar</option>
+          <option value="dividir">&#10135; Dividir</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn-calc" onclick="calcular()">= Calcular</button>
+
+    <div class="result-box">
+      <div class="result-label">Resultado</div>
+      <div class="result-value" id="resultado">&#8212;</div>
+    </div>
+  </div>
+
+  <!-- HISTORIAL -->
+  <div class="history-card">
+    <div class="history-header">
+      <h2>&#128203; Historial</h2>
+      <button class="btn-clear" onclick="limpiarHistorial()">Limpiar</button>
+    </div>
+    <div class="history-list" id="historialLista">
+      <div class="history-empty">Aun no hay operaciones.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const SYMBOLS = { sumar: '+', restar: '-', multiplicar: 'x', dividir: '/' };
+  let historial = JSON.parse(localStorage.getItem('calc_historial') || '[]');
+
+  window.addEventListener('DOMContentLoaded', renderHistorial);
+
+  function calcular() {
+    const n1 = document.getElementById('num1').value.trim();
+    const n2 = document.getElementById('num2').value.trim();
+    const op = document.getElementById('op').value;
+    const resEl = document.getElementById('resultado');
+
+    if (n1 === '' || n2 === '') {
+      resEl.textContent = 'Ingresa ambos numeros';
+      resEl.className = 'result-value error';
+      return;
+    }
+
+    const a = parseFloat(n1);
+    const b = parseFloat(n2);
+    let resultado, esError = false;
+
+    switch (op) {
+      case 'sumar':       resultado = a + b; break;
+      case 'restar':      resultado = a - b; break;
+      case 'multiplicar': resultado = a * b; break;
+      case 'dividir':
+        if (b === 0) { resultado = 'Division por cero'; esError = true; }
+        else result = a / b;
+        resultado = esError ? resultado : a / b;
+        break;
+    }
+
+    const resFormateado = esError ? resultado
+      : (Number.isInteger(resultado) ? resultado : parseFloat(resultado.toFixed(10)));
+
+    resEl.textContent = resFormateado;
+    resEl.className = esError ? 'result-value error' : 'result-value';
+
+    const entrada = {
+      n1: a, n2: b, op,
+      simbolo: SYMBOLS[op],
+      resultado: resFormateado,
+      esError,
+      ts: new Date().toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+    };
+
+    historial.unshift(entrada);
+    if (historial.length > 50) historial.pop();
+    localStorage.setItem('calc_historial', JSON.stringify(historial));
+    renderHistorial();
+  }
+
+  function renderHistorial() {
+    const lista = document.getElementById('historialLista');
+    if (historial.length === 0) {
+      lista.innerHTML = '<div class="history-empty">Aun no hay operaciones.</div>';
+      return;
+    }
+    lista.innerHTML = historial.map(h => `
+      <div class="history-item">
+        <div class="expr">
+          ${h.ts} &nbsp; ${h.n1} <span class="op-badge">${h.simbolo}</span> ${h.n2} =
+        </div>
+        <div class="res ${h.esError ? 'err' : ''}">${h.resultado}</div>
+      </div>
+    `).join('');
+  }
+
+  function limpiarHistorial() {
+    historial = [];
+    localStorage.removeItem('calc_historial');
+    renderHistorial();
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Enter') calcular(); });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+﻿<div class="container">
+  <h2>🌐 Ejercicio 1 — Consumo de API</h2>
+  <p class="subtitle">Usuarios obtenidos desde <code>jsonplaceholder.typicode.com</code></p>
+
+  <div *ngIf="cargando" class="loading">Cargando usuarios...</div>
+
+  <div *ngIf="error" class="error">⚠️ {{ error }}</div>
+
+  <div class="grid" *ngIf="!cargando && !error">
+    <div class="card" *ngFor="let u of usuarios">
+      <h3>{{ u.name }}</h3>
+      <p>📧 {{ u.email }}</p>
+      <p>📞 {{ u.phone }}</p>
+      <p>🏙️ {{ u.address?.city }}</p>
+      <p>🏢 {{ u.company?.name }}</p>
+    </div>
+  </div>
+</div>

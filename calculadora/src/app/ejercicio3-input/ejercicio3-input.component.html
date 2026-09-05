@@ -1,0 +1,29 @@
+﻿<div class="container">
+  <h2>🧩 Ejercicio 3 — Comunicacion con &#64;Input</h2>
+  <p class="subtitle">El padre pasa <code>nombre</code> y <code>edad</code> al componente hijo <code>&lt;app-tarjeta-usuario&gt;</code> mediante <strong>&#64;Input</strong>.</p>
+
+  <!-- Array fijo -->
+  <h3>Usuarios del array local</h3>
+  <div class="grid">
+    <app-tarjeta-usuario
+      *ngFor="let u of usuariosFijos"
+      [nombre]="u.nombre"
+      [edad]="u.edad">
+    </app-tarjeta-usuario>
+  </div>
+
+  <!-- Reto extra: desde API -->
+  <hr />
+  <h3>🚀 Reto extra — Usuarios desde la API</h3>
+  <button (click)="cargarDesdeApi()" class="btn-api" [disabled]="cargandoApi">
+    {{ cargandoApi ? 'Cargando...' : 'Cargar desde API' }}
+  </button>
+
+  <div class="grid" *ngIf="mostrarApi" style="margin-top: 16px;">
+    <app-tarjeta-usuario
+      *ngFor="let u of usuariosApi"
+      [nombre]="u.nombre"
+      [edad]="u.edad">
+    </app-tarjeta-usuario>
+  </div>
+</div>

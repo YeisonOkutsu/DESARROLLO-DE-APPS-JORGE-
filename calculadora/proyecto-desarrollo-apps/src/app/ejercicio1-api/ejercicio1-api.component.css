@@ -1,0 +1,24 @@
+﻿.container {
+  padding: 24px;
+  font-family: Arial, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+}
+h2 { color: #1976d2; }
+.subtitle { color: #555; margin-bottom: 20px; }
+code { background: #eee; padding: 2px 6px; border-radius: 4px; }
+.loading { color: #888; font-style: italic; }
+.error { color: #c62828; background: #ffebee; padding: 12px; border-radius: 8px; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+.card {
+  background: #e3f2fd;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.card h3 { margin: 0 0 8px; color: #0d47a1; }
+.card p { margin: 4px 0; font-size: 14px; color: #333; }
