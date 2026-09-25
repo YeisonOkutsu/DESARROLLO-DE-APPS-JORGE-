@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Calculadora Ionic</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light" class="ion-padding">
+  <div class="container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Calcular Operación</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-item>
+          <ion-input type="number" label="Número 1" labelPlacement="floating" placeholder="Ej: 12.5" [(ngModel)]="num1"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input type="number" label="Número 2" labelPlacement="floating" placeholder="Ej: 4" [(ngModel)]="num2"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-select label="Operación" labelPlacement="floating" [(ngModel)]="op">
+            <ion-select-option value="sumar">Sumar (+)</ion-select-option>
+            <ion-select-option value="restar">Restar (-)</ion-select-option>
+            <ion-select-option value="multiplicar">Multiplicar (x)</ion-select-option>
+            <ion-select-option value="dividir">Dividir (/)</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-button expand="block" class="ion-margin-top" (click)="calcular()">
+          Calcular
+        </ion-button>
+
+        <div class="result-box" [class.error]="esError">
+          <p>Resultado</p>
+          <h2>{{ resultado }}</h2>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header class="history-header">
+        <ion-card-title>Historial</ion-card-title>
+        <ion-button fill="clear" color="danger" (click)="limpiarHistorial()">Limpiar</ion-button>
+      </ion-card-header>
+
+      <ion-card-content>
+        @if (historial.length === 0) {
+          <div class="history-empty">Aún no hay operaciones guardadas.</div>
+        } @else {
+          <ion-list lines="full">
+            @for (h of historial; track h.ts) {
+              <ion-item>
+                <ion-label>
+                  <h3>{{ h.n1 }} <ion-badge color="tertiary">{{ h.simbolo }}</ion-badge> {{ h.n2 }}</h3>
+                  <p>{{ h.ts }}</p>
+                </ion-label>
+                <ion-note slot="end" [color]="h.esError ? 'danger' : 'success'">
+                  <strong>{{ h.resultado }}</strong>
+                </ion-note>
+              </ion-item>
+            }
+          </ion-list>
+        }
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
