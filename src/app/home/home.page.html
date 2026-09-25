@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Ionic Components</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    @for (comp of components; track comp.route) {
+      <ion-item [routerLink]="comp.route" style="cursor: pointer;">
+        <ion-label>{{ comp.name }}</ion-label>
+      </ion-item>
+    }
+  </ion-list>
+</ion-content>

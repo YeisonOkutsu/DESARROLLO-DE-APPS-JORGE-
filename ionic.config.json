@@ -1,0 +1,7 @@
+{
+  "name": "proyecto-yeison",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
