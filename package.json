@@ -1,0 +1,14 @@
+{
+  "name": "clasificador-smartfix",
+  "version": "0.1.0",
+  "description": "Clasificador de solicitudes de reparación para Smartfix - proyecto final del seminario de IA",
+  "main": "src/ordenes/ordenarPendientes.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Yeison Andrés Perdomo Losada",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
