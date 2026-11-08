@@ -1,19 +1,29 @@
-// HU-03: ordena las órdenes pendientes por prioridad y hora de llegada
-function ordenarPendientes(ordenes) {
-  const pesos = { Alta: 0, Media: 1, Baja: 2 };
+// HU-03: ordena las órdenes pendientes por prioridad y hora de llegada.
 
-  for (const o of ordenes) {
-    if (!Object.hasOwn(pesos, o.prioridad)) {
-      throw new Error(`Prioridad no válida en la orden ${o.numero}: ${o.prioridad}`);
+// Peso de cada prioridad: el número más bajo se atiende primero.
+const PESO_PRIORIDAD = Object.freeze({ Alta: 0, Media: 1, Baja: 2 });
+
+function validarPrioridades(ordenes) {
+  for (const orden of ordenes) {
+    if (!Object.hasOwn(PESO_PRIORIDAD, orden.prioridad)) {
+      throw new Error(`Prioridad no válida en la orden ${orden.numero}: ${orden.prioridad}`);
     }
   }
-
-  return [...ordenes].sort((a, b) => {
-    if (pesos[a.prioridad] !== pesos[b.prioridad]) {
-      return pesos[a.prioridad] - pesos[b.prioridad];
-    }
-    return a.horaLlegada.localeCompare(b.horaLlegada);
-  });
 }
 
-module.exports = { ordenarPendientes };
+function compararOrdenes(a, b) {
+  const diferenciaPrioridad = PESO_PRIORIDAD[a.prioridad] - PESO_PRIORIDAD[b.prioridad];
+  if (diferenciaPrioridad !== 0) {
+    return diferenciaPrioridad;
+  }
+  // Misma prioridad: primero la que llegó antes ("HH:MM" se compara como texto).
+  return a.horaLlegada.localeCompare(b.horaLlegada);
+}
+
+function ordenarPendientes(ordenes) {
+  validarPrioridades(ordenes);
+  // Se copia la lista para no modificar la original.
+  return [...ordenes].sort(compararOrdenes);
+}
+
+module.exports = { ordenarPendientes, PESO_PRIORIDAD };
