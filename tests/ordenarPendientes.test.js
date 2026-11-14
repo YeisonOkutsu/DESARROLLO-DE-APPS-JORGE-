@@ -61,4 +61,11 @@ describe('HU-03 ordenarPendientes', () => {
       'Prioridad no válida en la orden SF-0230: Urgentísima'
     );
   });
+
+  // ---- Semana 6: entradas no válidas ----
+  test('lanza TypeError si no recibe un arreglo', () => {
+    expect(() => ordenarPendientes(null)).toThrow(TypeError);
+    expect(() => ordenarPendientes({})).toThrow('La lista de órdenes debe ser un arreglo');
+    expect(() => ordenarPendientes('SF-0201')).toThrow('La lista de órdenes debe ser un arreglo');
+  });
 });

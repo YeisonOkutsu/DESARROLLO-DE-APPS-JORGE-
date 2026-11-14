@@ -21,6 +21,9 @@ function compararOrdenes(a, b) {
 }
 
 function ordenarPendientes(ordenes) {
+  if (!Array.isArray(ordenes)) {
+    throw new TypeError('La lista de órdenes debe ser un arreglo');
+  }
   validarPrioridades(ordenes);
   // Se copia la lista para no modificar la original.
   return [...ordenes].sort(compararOrdenes);
