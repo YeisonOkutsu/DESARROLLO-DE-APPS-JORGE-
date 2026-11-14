@@ -71,13 +71,13 @@ Una lista **nueva** (`Orden[]`) con las mismas órdenes, ordenadas primero por p
 | 6 | `[SF-0250 Alta 9:00]` | Error: `Hora de llegada no válida en la orden SF-0250: 9:00` |
 | 7 | `null` | TypeError: `La lista de órdenes debe ser un arreglo` |
 
-**Cambios de la semana 6 (revisión de seguridad).** Antes, el supuesto de que las horas llegan siempre como `HH:MM` no se comprobaba, y una hora como `9:00` quedaba después de `10:00` sin avisar. Ahora la función valida la entrada y lanza un error claro si no recibe un arreglo, si una orden no es un objeto o si la hora no tiene el formato `HH:MM` de 24 horas. El detalle está en [revision_seguridad.md](revision_seguridad.md).
+**Cambios de la semana 6 (revisión de seguridad).** Antes nadie revisaba que las horas llegaran como `HH:MM`, y una hora como `9:00` quedaba después de `10:00` sin ningún aviso. Ahora la función revisa los datos y lanza un error claro si no recibe una lista, si alguna orden no es un objeto o si la hora no tiene el formato `HH:MM` de 24 horas. Los detalles están en [revision_seguridad.md](revision_seguridad.md).
 
 ## 2. Requisitos
 
-- Node.js 18.18 o superior (probado con Node.js 24) y npm.
-- Git, para clonar el repositorio.
-- No necesita base de datos ni claves por ahora. Las variables que usará la API están en `.env.example`.
+- Node.js 18.18 o más nuevo (yo lo probé con Node.js 24) y npm, que viene con Node.
+- Git, para descargar el repositorio.
+- Por ahora no necesita base de datos ni claves. Las variables que va a usar la API están en `.env.example`.
 
 ## 3. Instalación
 
@@ -87,11 +87,11 @@ cd clasificador-smartfix
 npm ci
 ```
 
-`npm ci` instala exactamente las versiones fijadas en `package-lock.json`. Cuando el proyecto use variables de entorno, copia `.env.example` como `.env` y llena los valores; `.env` no se sube a Git.
+`npm ci` instala las mismas versiones que están en `package-lock.json`, así a todos les queda igual. Cuando el proyecto use variables de entorno, copia `.env.example` con el nombre `.env` y llena los valores. El `.env` no se sube a Git.
 
 ## 4. Ejecución
 
-Todavía no hay servidor: la HU-03 es la primera pieza de la API. Para ver la función funcionando con las órdenes del escenario 1:
+Todavía no hay servidor, porque la HU-03 es la primera parte de la API. Para ver la función trabajando con las órdenes del escenario 1:
 
 ```bash
 npm run ejemplo
@@ -113,9 +113,9 @@ npm test
 npm run lint
 ```
 
-- `npm test` ejecuta las pruebas de Jest de `tests/ordenarPendientes.test.js`: los casos normales, límite y de error de la HU-03, y las pruebas de abuso de la semana 6 (entradas no válidas y prioridades heredadas como `__proto__` o `toString`).
-- `npm run lint` pasa ESLint con las reglas recomendadas, las de seguridad de `eslint-plugin-security` y reglas de estilo (configuración en `eslint.config.js`). Debe terminar sin avisos.
-- `npm audit` revisa vulnerabilidades conocidas en las dependencias (ver la sección de pendientes del informe).
+- `npm test` corre las 14 pruebas de `tests/ordenarPendientes.test.js`: los casos normales, los casos límite y los de error de la HU-03, más las pruebas de abuso de la semana 6 (datos mal formados y prioridades tramposas como `__proto__` o `toString`).
+- `npm run lint` revisa el código con ESLint, incluyendo reglas de seguridad. La configuración está en `eslint.config.js` y debe terminar sin avisos.
+- `npm audit` busca fallas conocidas en las librerías que usa el proyecto. Lo que salió está explicado en los pendientes del informe.
 
 ## 6. Estructura
 
@@ -140,7 +140,7 @@ npm run lint
 
 ## 7. Uso de IA
 
-En el proyecto se usó Claude (Anthropic), en modo chat y agente, para proponer pruebas, implementar y refactorizar la HU-03 (semana 5) y para la segunda revisión de seguridad y las correcciones de la semana 6. El agente trabajó en la rama `semana6-revision`, con un commit por corrección, y su diff se revisó antes de integrarlo. Cada sugerencia se verificó con las pruebas y el linter; las que se aceptaron, cambiaron o rechazaron están en [bitacora_ia.md](bitacora_ia.md), y la clasificación de los hallazgos de la IA en reales y falsos positivos está en [revision_seguridad.md](revision_seguridad.md).
+Usé Claude (Anthropic), en modo chat y en modo agente. En la semana 5 me ayudó a proponer las pruebas, implementar la HU-03 y mejorar el código. En la semana 6 lo usé para una segunda revisión de seguridad y para las correcciones. El agente trabajó en una rama aparte (`semana6-revision`), con un commit por cada corrección, y revisé los cambios antes de pasarlos a `main`. Todo lo que sugirió lo comprobé con las pruebas y el linter. En [bitacora_ia.md](bitacora_ia.md) está qué acepté, qué cambié y qué rechacé, y en [revision_seguridad.md](revision_seguridad.md) está cuáles hallazgos de la IA eran reales y cuáles no.
 
 ## 8. Autor y licencia
 
