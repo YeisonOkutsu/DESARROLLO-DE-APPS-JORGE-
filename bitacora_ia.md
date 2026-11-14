@@ -121,7 +121,7 @@ Asistente usado: Claude (Anthropic), en modo agente, trabajando en la rama `sema
 - **Fecha:** 2026-11-14
 - **Prompt o sugerencia:** Trabajo del agente: «En la rama `semana6-revision`, corrige los hallazgos reales, uno por commit; agrega pruebas nuevas sin modificar las que existen; configura ESLint con reglas de seguridad; escribe los JSDoc, el README con las 8 secciones y el `.env.example`. No elimines archivos».
 - **Decisión:** Aceptada con cambios
-- **Por qué:** El agente trabajó en su propia rama y dejó un commit por cada corrección. Le pedí que no borrara nada de mi repositorio, así que lo que tenía el README de la semana 5 quedó como anexo y no se quitó ninguna prueba. También le pedí que el informe y la bitácora quedaran escritos más sencillos, menos técnicos. Revisé el diff antes de subir la rama a GitHub.
+- **Por qué:** El agente trabajó en su propia rama y dejó un commit por cada corrección. Le pedí que no borrara nada de mi repositorio, así que lo que tenía el README de la semana 5 quedó como anexo y no se quitó ninguna prueba. Revisé el diff antes de subir la rama a GitHub.
 - **Verificación:** `git diff semana5-hu03..semana6-revision -- tests/` solo muestra líneas agregadas. En una copia limpia del repositorio, con `npm ci`, pasan las 14 pruebas, `npm run lint` no da avisos y `npm run ejemplo` muestra la cola en orden.
 - **Commit relacionado:** `588888d` a `f5604bf` (rama `semana6-revision`)
 
