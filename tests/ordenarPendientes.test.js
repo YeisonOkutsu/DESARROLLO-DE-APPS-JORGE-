@@ -88,4 +88,14 @@ describe('HU-03 ordenarPendientes', () => {
       'Hora de llegada no válida en la orden SF-0253: 25:00'
     );
   });
+
+  // ---- Prueba de abuso: nombres heredados de Object no son prioridades ----
+  test.each(['toString', '__proto__', 'constructor', 'hasOwnProperty'])(
+    'rechaza la prioridad heredada "%s"',
+    (prioridad) => {
+      expect(() => ordenarPendientes([orden('SF-0260', prioridad, '08:00')])).toThrow(
+        `Prioridad no válida en la orden SF-0260: ${prioridad}`
+      );
+    }
+  );
 });
