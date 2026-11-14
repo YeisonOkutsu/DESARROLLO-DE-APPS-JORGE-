@@ -3,6 +3,9 @@
 // Peso de cada prioridad: el número más bajo se atiende primero.
 const PESO_PRIORIDAD = Object.freeze({ Alta: 0, Media: 1, Baja: 2 });
 
+// Hora de 24 horas con dos dígitos, de "00:00" a "23:59".
+const FORMATO_HORA = /^([01]\d|2[0-3]):[0-5]\d$/;
+
 function validarPrioridades(ordenes) {
   ordenes.forEach((orden, posicion) => {
     if (orden === null || typeof orden !== 'object') {
@@ -10,6 +13,11 @@ function validarPrioridades(ordenes) {
     }
     if (!Object.hasOwn(PESO_PRIORIDAD, orden.prioridad)) {
       throw new Error(`Prioridad no válida en la orden ${orden.numero}: ${orden.prioridad}`);
+    }
+    if (typeof orden.horaLlegada !== 'string' || !FORMATO_HORA.test(orden.horaLlegada)) {
+      throw new Error(
+        `Hora de llegada no válida en la orden ${orden.numero}: ${orden.horaLlegada}`
+      );
     }
   });
 }

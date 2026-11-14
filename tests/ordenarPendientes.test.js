@@ -75,4 +75,17 @@ describe('HU-03 ordenarPendientes', () => {
     );
     expect(() => ordenarPendientes(['SF-0241'])).toThrow(TypeError);
   });
+
+  test('lanza error si la hora no tiene el formato HH:MM de 24 horas', () => {
+    // Antes "9:00" quedaba después de "10:00" porque se compara como texto.
+    expect(() =>
+      ordenarPendientes([orden('SF-0250', 'Alta', '9:00'), orden('SF-0251', 'Alta', '10:00')])
+    ).toThrow('Hora de llegada no válida en la orden SF-0250: 9:00');
+    expect(() => ordenarPendientes([orden('SF-0252', 'Media', 800)])).toThrow(
+      'Hora de llegada no válida en la orden SF-0252: 800'
+    );
+    expect(() => ordenarPendientes([orden('SF-0253', 'Baja', '25:00')])).toThrow(
+      'Hora de llegada no válida en la orden SF-0253: 25:00'
+    );
+  });
 });
