@@ -4,11 +4,14 @@
 const PESO_PRIORIDAD = Object.freeze({ Alta: 0, Media: 1, Baja: 2 });
 
 function validarPrioridades(ordenes) {
-  for (const orden of ordenes) {
+  ordenes.forEach((orden, posicion) => {
+    if (orden === null || typeof orden !== 'object') {
+      throw new TypeError(`Orden no válida en la posición ${posicion}`);
+    }
     if (!Object.hasOwn(PESO_PRIORIDAD, orden.prioridad)) {
       throw new Error(`Prioridad no válida en la orden ${orden.numero}: ${orden.prioridad}`);
     }
-  }
+  });
 }
 
 function compararOrdenes(a, b) {

@@ -68,4 +68,11 @@ describe('HU-03 ordenarPendientes', () => {
     expect(() => ordenarPendientes({})).toThrow('La lista de órdenes debe ser un arreglo');
     expect(() => ordenarPendientes('SF-0201')).toThrow('La lista de órdenes debe ser un arreglo');
   });
+
+  test('lanza TypeError si una orden no es un objeto', () => {
+    expect(() => ordenarPendientes([orden('SF-0240', 'Alta', '08:00'), null])).toThrow(
+      'Orden no válida en la posición 1'
+    );
+    expect(() => ordenarPendientes(['SF-0241'])).toThrow(TypeError);
+  });
 });
