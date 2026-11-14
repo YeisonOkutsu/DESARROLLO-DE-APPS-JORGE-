@@ -3,7 +3,8 @@
 Proyecto: Clasificador de solicitudes de reparación para Smartfix (HU-03, ordenar las órdenes pendientes)
 Estudiante: Yeison Andrés Perdomo Losada
 Fecha: 2026-11-14
-Commit revisado: `4332b47`, que es la entrega de la semana 5. Las correcciones las hice en la rama `semana6-revision` y después las pasé a `main`.
+Repositorio: https://github.com/YeisonOkutsu/DESARROLLO-DE-APPS-JORGE- (rama `semana6-revision`)
+Commit revisado: `4332b47`, que es el código de la semana 5 (rama `semana5-hu03`). Las correcciones están en la rama `semana6-revision`.
 
 ## 1. Herramientas y criterios
 

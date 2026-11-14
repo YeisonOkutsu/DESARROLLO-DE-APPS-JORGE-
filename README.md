@@ -82,7 +82,7 @@ Una lista **nueva** (`Orden[]`) con las mismas órdenes, ordenadas primero por p
 ## 3. Instalación
 
 ```bash
-git clone <url-del-repositorio> clasificador-smartfix
+git clone -b semana6-revision https://github.com/YeisonOkutsu/DESARROLLO-DE-APPS-JORGE-.git clasificador-smartfix
 cd clasificador-smartfix
 npm ci
 ```
@@ -140,7 +140,7 @@ npm run lint
 
 ## 7. Uso de IA
 
-Usé Claude (Anthropic), en modo chat y en modo agente. En la semana 5 me ayudó a proponer las pruebas, implementar la HU-03 y mejorar el código. En la semana 6 lo usé para una segunda revisión de seguridad y para las correcciones. El agente trabajó en una rama aparte (`semana6-revision`), con un commit por cada corrección, y revisé los cambios antes de pasarlos a `main`. Todo lo que sugirió lo comprobé con las pruebas y el linter. En [bitacora_ia.md](bitacora_ia.md) está qué acepté, qué cambié y qué rechacé, y en [revision_seguridad.md](revision_seguridad.md) está cuáles hallazgos de la IA eran reales y cuáles no.
+Usé Claude (Anthropic), en modo chat y en modo agente. En la semana 5 me ayudó a proponer las pruebas, implementar la HU-03 y mejorar el código. En la semana 6 lo usé para una segunda revisión de seguridad y para las correcciones. El agente trabajó en una rama aparte (`semana6-revision`), con un commit por cada corrección, y revisé los cambios antes de subirlos. Todo lo que sugirió lo comprobé con las pruebas y el linter. En [bitacora_ia.md](bitacora_ia.md) está qué acepté, qué cambié y qué rechacé, y en [revision_seguridad.md](revision_seguridad.md) está cuáles hallazgos de la IA eran reales y cuáles no.
 
 ## 8. Autor y licencia
 
