@@ -4,11 +4,16 @@
   "description": "Clasificador de solicitudes de reparación para Smartfix - proyecto final del seminario de IA",
   "main": "src/ordenes/ordenarPendientes.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint ."
   },
   "author": "Yeison Andrés Perdomo Losada",
   "license": "MIT",
   "devDependencies": {
+    "@eslint/js": "9.39.1",
+    "eslint": "9.39.1",
+    "eslint-plugin-security": "3.0.1",
+    "globals": "16.5.0",
     "jest": "29.7.0"
   }
 }
