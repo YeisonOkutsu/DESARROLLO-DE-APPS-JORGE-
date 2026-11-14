@@ -9,6 +9,6 @@
   "author": "Yeison Andrés Perdomo Losada",
   "license": "MIT",
   "devDependencies": {
-    "jest": "^29.7.0"
+    "jest": "29.7.0"
   }
 }
