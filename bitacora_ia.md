@@ -76,3 +76,52 @@ La primera versión del asistente devolvía `ordenes.sort(...)`. Seis pruebas pa
 ## Reflexión final
 
 El asistente me ayudó más a pasar del contrato al código rápido y a proponer el refactor, que dejó la función más fácil de explicar. Lo más útil fue escribir las pruebas primero: la de «no modificar la lista original» atrapó el error de `sort()`, que a simple vista parecía correcto porque los casos normales pasaban. También aprendí que hay que leer cada línea, porque el `in` parecía bien y dejaba pasar una prioridad falsa. Las decisiones de qué entra en la función, como dejar «Sin clasificar» por fuera, salieron del criterio de aceptación y no de la IA. En la próxima funcionalidad escribiría desde el inicio una prueba con una prioridad «rara» y definiría con el cliente qué hacer con las órdenes sin clasificar antes de pedir código.
+
+## Semana 6: revisión de código y seguridad
+
+Asistente usado: Claude (Anthropic), en modo agente, en la rama `semana6-revision`.
+
+### Entrada 7
+
+- **Fecha:** 2026-11-14
+- **Prompt o sugerencia:** Segunda revisión con el prompt de la semana: «Actúa como revisor de código JavaScript con experiencia en seguridad [...] Tabla: línea | problema | severidad | corrección sugerida. No reescribas todo el código. Separa los problemas seguros de las sospechas que habría que verificar». La IA entregó 7 hallazgos.
+- **Decisión:** Aceptada con cambios
+- **Por qué:** 3 hallazgos eran reales (lista que no es arreglo, orden `null`, hora sin validar). 3 eran falsos positivos: la «inyección de objeto» en `PESO_PRIORIDAD[a.prioridad]` ya está cubierta por `Object.hasOwn`, `localeCompare` ordena bien las horas `HH:MM` en cualquier idioma, y `Object.freeze` no necesita ser profundo porque los valores son números. 1 queda como sospecha (mensaje con `<script>` cuando exista la pantalla).
+- **Verificación:** Probé cada hallazgo con `node -e` sobre el commit `4332b47` y ordené horas con 6 idiomas distintos. La tabla con la clasificación está en la sección 3 de `revision_seguridad.md`.
+- **Commit relacionado:** `4332b47` (código revisado)
+
+### Entrada 8
+
+- **Fecha:** 2026-11-14
+- **Prompt o sugerencia:** La IA propuso validar que `horaLlegada` tenga formato `HH:MM` de 24 horas con la expresión `/^([01]\d|2[0-3]):[0-5]\d$/`.
+- **Decisión:** Aceptada (cambia la decisión de la entrada 5)
+- **Por qué:** En la semana 5 la rechacé porque el contrato suponía que las horas siempre llegan bien. En la revisión vi que, si llega `9:00`, la orden queda después de `10:00` sin ningún aviso: la cola sale mal en silencio. Como la función será la entrada de una API, es mejor fallar con un mensaje claro. Cambia el comportamiento, así que agregué una prueba nueva y no modifiqué ninguna de las anteriores.
+- **Verificación:** La prueba nueva falla sin la validación y pasa con ella. Las 7 pruebas originales siguieron en verde.
+- **Commit relacionado:** `851527c` Corrección: validar que horaLlegada tenga formato HH:MM de 24 horas
+
+### Entrada 9
+
+- **Fecha:** 2026-11-14
+- **Prompt o sugerencia:** Para el aviso de `npm audit` (deepmerge en Jest), la sugerencia automática era `npm audit fix --force`, y la IA propuso subir a Jest 30.
+- **Decisión:** Rechazada
+- **Por qué:** `npm audit fix --force` bajaba Jest a la versión 25, un cambio incompatible. Probé Jest 30.5.2 y `npm audit` pasó de 6 avisos bajos a 19 (16 moderados). Me quedé con Jest 29.7.0 fijado sin `^` y lo dejé como pendiente justificado: es una dependencia solo de desarrollo.
+- **Verificación:** `npm audit` con las dos versiones y `npm test` con 14 pruebas en verde.
+- **Commit relacionado:** `6252eba` Seguridad (dependencias): fijar jest en la versión exacta 29.7.0
+
+### Entrada 10
+
+- **Fecha:** 2026-11-14
+- **Prompt o sugerencia:** Trabajo del agente: «En la rama `semana6-revision`, corrige los hallazgos reales uno por commit, agrega pruebas nuevas sin modificar las existentes, configura ESLint con reglas de seguridad, escribe JSDoc, el README de 8 secciones y `.env.example`. No elimines archivos».
+- **Decisión:** Aceptada con cambios
+- **Por qué:** El agente trabajó en su propia rama, con un commit por corrección. Revisé el diff de cada commit antes de integrarlo. Le pedí que no borrara nada del repositorio: el contenido del README de la semana 5 quedó como anexo y no se quitó ninguna prueba.
+- **Verificación:** `git diff main..semana6-revision -- tests/` solo muestra líneas agregadas. `npm test` (14 en verde) y `npm run lint` (0 avisos) también pasan en un clon limpio con `npm ci`.
+- **Commit relacionado:** `588888d` a `f5604bf` (rama `semana6-revision`)
+
+### Resumen de la semana 6
+
+| Decisión | Cantidad |
+|---|---|
+| Aceptadas | 1 |
+| Aceptadas con cambios | 2 |
+| Rechazadas | 1 |
+
