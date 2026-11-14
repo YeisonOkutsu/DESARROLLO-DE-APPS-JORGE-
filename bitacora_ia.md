@@ -10,7 +10,15 @@ Asistente usado: Claude (Anthropic), modo chat y agente
 ### Entrada 1
 
 - **Fecha:** 2026-11-07
-- **Prompt o sugerencia:** «Ayúdame con la tarea de la semana 5 de mi proyecto final». El asistente sugirió tomar la HU-03 (Must) y usar Jest para las pruebas, porque el backend del diseño de la semana 4 es Node.js + Express.
+- **Prompt o sugerencia:**
+
+  > Actúa como un desarrollador que trabaja con pruebas primero (TDD). Mi proyecto final es el «Clasificador de solicitudes de reparación para Smartfix». Según mi documento de diseño de la semana 4, el backend es una API en Node.js + Express. Te adjunto el enunciado de la tarea de la semana 5 y el formato de contrato que usamos en clase (nombre y firma, qué recibe, qué devuelve, supuestos y casos límite, y ejemplos de entrada → salida).
+  >
+  > Necesito: 1) que me recomiendes una historia de usuario de prioridad Must de mi documento de requisitos que sea pequeña, de una sola función, con casos límite claros; 2) el contrato de esa función con ese formato y al menos 3 ejemplos; 3) al menos 5 pruebas automatizadas escritas antes del código: 2 casos normales, 2 de límite y 1 de error que salga del escenario de error del criterio de aceptación.
+  >
+  > Restricciones: usa el marco de pruebas que corresponda a Node.js, no agregues librerías que no hagan falta, no escribas todavía la implementación y explica por qué elegiste esa historia.
+
+  El asistente sugirió la HU-03 (ver las órdenes pendientes ordenadas por prioridad y hora de llegada) y usar Jest para las pruebas.
 - **Decisión:** Aceptada
 - **Por qué:** La HU-03 es una sola función sin base de datos ni IA, con escenarios ya escritos en el documento de requisitos. Jest es el marco de pruebas natural para Node.js y la tarea permite usar el equivalente de pytest en otro lenguaje.
 - **Verificación:** Instalé Jest 29 y comprobé que `npm test` ejecuta las 7 pruebas con un solo comando. En el primer commit fallaban las 7, como se esperaba.
