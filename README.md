@@ -4,11 +4,13 @@ Proyecto final del Seminario de Inteligencia Artificial Aplicada al Ciclo de Vid
 
 Estudiante: Yeison Andrés Perdomo Losada
 
+## 1. Qué es
+
 El sistema registra las solicitudes de reparación de un taller de celulares, sugiere el tipo de falla y la prioridad con IA y ordena la cola de atención de los técnicos. Según el documento de diseño de la semana 4, el backend es una API en Node.js + Express; esta funcionalidad es la primera pieza de esa API.
 
-## Funcionalidad de la semana 5
+### Funcionalidad de la semana 5
 
-### Historia de usuario
+#### Historia de usuario
 
 **HU-03 (Must).** Como técnico, quiero ver las órdenes pendientes ordenadas por prioridad y luego por hora de llegada para atender primero lo urgente.
 
@@ -18,7 +20,7 @@ El sistema registra las solicitudes de reparación de un taller de celulares, su
 - **Escenario 2: sin pendientes.** Dado que no hay órdenes pendientes, cuando abro la lista, entonces veo el mensaje «No hay órdenes pendientes». (La función devuelve una lista vacía y la pantalla muestra el mensaje.)
 - **Escenario de error: prioridad no válida.** Dado que una orden llega con una prioridad que no existe, por ejemplo «Urgentísima», cuando se ordena la lista, entonces el sistema rechaza la operación con el mensaje «Prioridad no válida en la orden SF-xxxx: Urgentísima».
 
-### Contrato de la función
+#### Contrato de la función
 
 **Nombre y firma**
 
@@ -66,6 +68,86 @@ Una lista **nueva** (`Orden[]`) con las mismas órdenes, ordenadas primero por p
 | 3 | `[]` | `[]` |
 | 4 | `[SF-0220 Media 10:00, SF-0221 Media 10:00]` | `[SF-0220, SF-0221]` |
 | 5 | `[SF-0230 Urgentísima 09:00]` | Error: `Prioridad no válida en la orden SF-0230: Urgentísima` |
+| 6 | `[SF-0250 Alta 9:00]` | Error: `Hora de llegada no válida en la orden SF-0250: 9:00` |
+| 7 | `null` | TypeError: `La lista de órdenes debe ser un arreglo` |
+
+**Cambios de la semana 6 (revisión de seguridad).** Antes, el supuesto de que las horas llegan siempre como `HH:MM` no se comprobaba, y una hora como `9:00` quedaba después de `10:00` sin avisar. Ahora la función valida la entrada y lanza un error claro si no recibe un arreglo, si una orden no es un objeto o si la hora no tiene el formato `HH:MM` de 24 horas. El detalle está en [revision_seguridad.md](revision_seguridad.md).
+
+## 2. Requisitos
+
+- Node.js 18.18 o superior (probado con Node.js 24) y npm.
+- Git, para clonar el repositorio.
+- No necesita base de datos ni claves por ahora. Las variables que usará la API están en `.env.example`.
+
+## 3. Instalación
+
+```bash
+git clone <url-del-repositorio> clasificador-smartfix
+cd clasificador-smartfix
+npm ci
+```
+
+`npm ci` instala exactamente las versiones fijadas en `package-lock.json`. Cuando el proyecto use variables de entorno, copia `.env.example` como `.env` y llena los valores; `.env` no se sube a Git.
+
+## 4. Ejecución
+
+Todavía no hay servidor: la HU-03 es la primera pieza de la API. Para ver la función funcionando con las órdenes del escenario 1:
+
+```bash
+npm run ejemplo
+```
+
+Salida esperada:
+
+```
+Cola de atención de los técnicos:
+1. SF-0201  Alta  10:30
+2. SF-0198  Media  09:00
+3. SF-0195  Baja  08:00
+```
+
+## 5. Pruebas
+
+```bash
+npm test
+npm run lint
+```
+
+- `npm test` ejecuta las pruebas de Jest de `tests/ordenarPendientes.test.js`: los casos normales, límite y de error de la HU-03, y las pruebas de abuso de la semana 6 (entradas no válidas y prioridades heredadas como `__proto__` o `toString`).
+- `npm run lint` pasa ESLint con las reglas recomendadas, las de seguridad de `eslint-plugin-security` y reglas de estilo (configuración en `eslint.config.js`). Debe terminar sin avisos.
+- `npm audit` revisa vulnerabilidades conocidas en las dependencias (ver la sección de pendientes del informe).
+
+## 6. Estructura
+
+```
+.
+├── README.md                 Este archivo
+├── bitacora_ia.md            Bitácora de uso de IA
+├── revision_seguridad.md     Informe de revisión de código y seguridad (semana 6)
+├── .env.example              Variables de entorno sin valores
+├── .gitignore
+├── LICENSE
+├── eslint.config.js          Configuración del linter
+├── package.json
+├── package-lock.json
+├── src/
+│   ├── ejemplo.js            Ejemplo que se ejecuta con npm run ejemplo
+│   └── ordenes/
+│       └── ordenarPendientes.js
+└── tests/
+    └── ordenarPendientes.test.js
+```
+
+## 7. Uso de IA
+
+En el proyecto se usó Claude (Anthropic), en modo chat y agente, para proponer pruebas, implementar y refactorizar la HU-03 (semana 5) y para la segunda revisión de seguridad y las correcciones de la semana 6. El agente trabajó en la rama `semana6-revision`, con un commit por corrección, y su diff se revisó antes de integrarlo. Cada sugerencia se verificó con las pruebas y el linter; las que se aceptaron, cambiaron o rechazaron están en [bitacora_ia.md](bitacora_ia.md), y la clasificación de los hallazgos de la IA en reales y falsos positivos está en [revision_seguridad.md](revision_seguridad.md).
+
+## 8. Autor y licencia
+
+- Autor: Yeison Andrés Perdomo Losada, Fundación Escuela Tecnológica de Neiva (FET).
+- Licencia: MIT. Ver [LICENSE](LICENSE).
+
+## Anexo: notas de la semana 5
 
 ### Cómo ejecutar las pruebas
 
