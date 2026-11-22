@@ -142,8 +142,8 @@ Asistente usado: Claude (Anthropic), en modo agente, trabajando en la rama `sema
 - **Fecha:** 2026-11-22
 - **Prompt o sugerencia:** «Te doy la regla de la HU-03 y el contrato de `ordenarPendientes`. Propón casos de prueba para `validarOrden`, `compararOrdenes` y `ordenarPendientes` usando particiones de equivalencia (incluidas las inválidas), valores límite (el último valor de una partición y el primero de la siguiente) y una tabla de decisión para las funciones que combinan condiciones. Dime de dónde sale cada esperado y qué partes de la regla no están claras.»
 - **Decisión:** Aceptada con cambios
-- **Por qué:** Revisé la propuesta con las cinco preguntas. Particiones y límites: estaban las tres prioridades válidas, las inválidas y los bordes de la hora (00:00, 00:59 / 00:60, 19:59 / 20:00, 23:59 / 24:00 y 23:60). Origen del esperado: todos salen del contrato del README. Ambigüedades: quedaron 4 anotadas (mayúsculas o espacios en la prioridad, qué error se muestra si hay dos problemas, si un arreglo cuenta como orden y el número de orden sin validar). Reglas inventadas: la IA sugería probar qué pasa con un arreglo `[]`, pero cualquier esperado que pusiera iba a salir de lo que hace el código y no de la regla, así que no le hice prueba y lo dejé como pregunta.
-- **Verificación:** Cada esperado de la tabla lo saqué del contrato del README, no de correr el código. Las tablas y las 4 ambigüedades están en la sección 1 de `registro_pruebas.md`.
+- **Por qué:** Revisé lo que propuso con las cinco preguntas de la semana. Estaban las tres prioridades que sirven, las que no sirven y los bordes de la hora (00:00, 00:59 y 00:60, 19:59 y 20:00, 23:59 y 24:00, y 23:60), y cada resultado esperado salía del contrato del README. Al pensar en lo que la regla no dejaba claro, me quedaron 4 preguntas: si «alta» en minúsculas cuenta, qué error sale si hay dos cosas mal, si una lista vacía cuenta como orden y qué pasa con el número de la orden. Lo que sí cambié fue lo de la lista vacía `[]`: la IA quería probarlo, pero cualquier resultado que pusiera lo iba a sacar de lo que hace el código y no de la regla, así que no le hice prueba y lo dejé como pregunta para el cliente.
+- **Verificación:** Cada resultado esperado de la tabla lo saqué del contrato del README, sin correr el código. Las tablas y las 4 ambigüedades están en la sección 1 de `registro_pruebas.md`.
 - **Commit relacionado:** `22e3bdf` Pruebas semana 7
 
 ### Entrada 12
@@ -151,8 +151,8 @@ Asistente usado: Claude (Anthropic), en modo agente, trabajando en la rama `sema
 - **Fecha:** 2026-11-22
 - **Prompt o sugerencia:** «Escribe las pruebas con Jest en `tests/reglasHU03.test.js` a partir de las reglas y de mi tabla revisada: `test.each` con un comentario por fila, `toThrow` con el tipo de error exacto y el mensaje, esperados fijos que salgan de la regla y los datos de `tests/datos/ordenesSinteticas.js` en un `beforeEach`. No modifiques el código de `src/`.» La IA entregó 33 pruebas y todas pasaban.
 - **Decisión:** Aceptada con cambios
-- **Por qué:** Que pasaran no quería decir que estuvieran bien. En `compararOrdenes` pedía `-2` y `2` exactos: eso sale de restar los pesos en el código, pero la regla solo dice quién va primero. Lo cambié para comparar el signo. Descarté 4 pruebas (2 redundantes y 2 débiles) y fortalecí 3 que solo revisaban el tipo de error y no el mensaje. El detalle está en la sección 2 de `registro_pruebas.md`.
-- **Verificación:** Para comprobar que el `-2` venía del código, cambié el código para que devolviera `-1`, que sigue cumpliendo la regla. Fallaron 2 pruebas del borrador y ninguna de la versión revisada. Después lo deshice con `git restore`. Al final pasan las 56 pruebas.
+- **Por qué:** Que pasaran no quería decir que estuvieran bien. En `compararOrdenes` pedía `-2` y `2` exactos, y eso sale de restar los pesos que usa el código, pero la regla solo dice quién va primero. Por eso ahora reviso solo el signo. En total corregí 4 pruebas (2 por pedir un número exacto y 2 que no revisaban el mensaje del error) y descarté 4 (3 estaban repetidas y 1 pasaba aunque el orden estuviera mal). También agregué los límites de la hora que le faltaban. Todo está en la sección 2 de `registro_pruebas.md`.
+- **Verificación:** Para comprobar que el `-2` venía del código, cambié el código para que devolviera `-1`, que sigue cumpliendo la regla. Fallaron 2 pruebas del borrador y ninguna de las mías. Después lo deshice con `git restore`. Al final pasan las 56 pruebas.
 - **Commit relacionado:** `22e3bdf` Pruebas semana 7
 
 ### Entrada 13
@@ -169,8 +169,8 @@ Asistente usado: Claude (Anthropic), en modo agente, trabajando en la rama `sema
 - **Fecha:** 2026-11-22
 - **Prompt o sugerencia:** Le pedí al agente que metiera 9 errores a propósito en `ordenarPendientes.js`, uno a la vez, que corriera las pruebas después de cada uno y que los deshiciera con `git restore`. Primero con las pruebas de la semana 6 y después con las de la semana 7.
 - **Decisión:** Aceptada
-- **Por qué:** Es la forma de saber si las pruebas protegen de verdad. Con las pruebas de la semana 6, 2 errores pasaban sin que nada fallara: aceptar 24:00 y aceptar 23:60. Por eso agregué los límites de la hora.
-- **Verificación:** Con la suite de la semana 7 los 9 errores hacen fallar al menos una prueba. `git status` quedó limpio después de cada error. La tabla está en la sección 3 de `registro_pruebas.md`.
+- **Por qué:** Es la única forma de saber si las pruebas de verdad avisan cuando algo se daña. Con las pruebas de la semana 6, 2 errores pasaban sin que nada fallara: aceptar 24:00 y aceptar 23:60. Por eso agregué los límites de la hora.
+- **Verificación:** Con las pruebas de la semana 7, los 9 errores hacen fallar al menos una prueba. `git status` quedó limpio después de cada error. La tabla está en la sección 3 de `registro_pruebas.md`.
 - **Commit relacionado:** `22e3bdf` Pruebas semana 7
 
 ### Resumen de la semana 7
