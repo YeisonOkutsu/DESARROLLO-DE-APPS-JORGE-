@@ -82,7 +82,7 @@ Una lista **nueva** (`Orden[]`) con las mismas órdenes, ordenadas primero por p
 ## 3. Instalación
 
 ```bash
-git clone -b semana6-revision https://github.com/YeisonOkutsu/DESARROLLO-DE-APPS-JORGE-.git clasificador-smartfix
+git clone -b semana7-pruebas https://github.com/YeisonOkutsu/DESARROLLO-DE-APPS-JORGE-.git clasificador-smartfix
 cd clasificador-smartfix
 npm ci
 ```
@@ -113,7 +113,8 @@ npm test
 npm run lint
 ```
 
-- `npm test` corre las 14 pruebas de `tests/ordenarPendientes.test.js`: los casos normales, los casos límite y los de error de la HU-03, más las pruebas de abuso de la semana 6 (datos mal formados y prioridades tramposas como `__proto__` o `toString`).
+- `npm test` corre las 56 pruebas. En `tests/ordenarPendientes.test.js` están las de las semanas 5 y 6: los casos normales, los casos límite y los de error de la HU-03, más las pruebas de abuso (datos mal formados y prioridades tramposas como `__proto__` o `toString`). En `tests/reglasHU03.test.js` están las de la semana 7, diseñadas con particiones de equivalencia, valores límite y tablas de decisión; usan los datos sintéticos de `tests/datos/ordenesSinteticas.js`. El diseño de cada caso está en [registro_pruebas.md](registro_pruebas.md).
+- `npx jest --verbose` muestra el nombre de cada prueba (es el equivalente de `pytest -v`).
 - `npm run lint` revisa el código con ESLint, incluyendo reglas de seguridad. La configuración está en `eslint.config.js` y debe terminar sin avisos.
 - `npm audit` busca fallas conocidas en las librerías que usa el proyecto. Lo que salió está explicado en los pendientes del informe.
 
@@ -124,6 +125,7 @@ npm run lint
 ├── README.md                 Este archivo
 ├── bitacora_ia.md            Bitácora de uso de IA
 ├── revision_seguridad.md     Informe de revisión de código y seguridad (semana 6)
+├── registro_pruebas.md       Tabla de casos y revisión de las pruebas de la IA (semana 7)
 ├── .env.example              Variables de entorno sin valores
 ├── .gitignore
 ├── LICENSE
@@ -135,12 +137,15 @@ npm run lint
 │   └── ordenes/
 │       └── ordenarPendientes.js
 └── tests/
-    └── ordenarPendientes.test.js
+    ├── ordenarPendientes.test.js   Pruebas de las semanas 5 y 6
+    ├── reglasHU03.test.js          Pruebas de las reglas (semana 7)
+    └── datos/
+        └── ordenesSinteticas.js    Datos sintéticos del taller (sin personas reales)
 ```
 
 ## 7. Uso de IA
 
-Usé Claude (Anthropic), en modo chat y en modo agente. En la semana 5 me ayudó a proponer las pruebas, implementar la HU-03 y mejorar el código. En la semana 6 lo usé para una segunda revisión de seguridad y para las correcciones. El agente trabajó en una rama aparte (`semana6-revision`), con un commit por cada corrección, y revisé los cambios antes de subirlos. Todo lo que sugirió lo comprobé con las pruebas y el linter. En [bitacora_ia.md](bitacora_ia.md) está qué acepté, qué cambié y qué rechacé, y en [revision_seguridad.md](revision_seguridad.md) está cuáles hallazgos de la IA eran reales y cuáles no.
+Usé Claude (Anthropic), en modo chat y en modo agente. En la semana 5 me ayudó a proponer las pruebas, implementar la HU-03 y mejorar el código. En la semana 6 lo usé para una segunda revisión de seguridad y para las correcciones. En la semana 7 me ayudó a proponer casos de prueba, a escribir un borrador de las pruebas y a generar datos sintéticos; revisé cada prueba contra la regla y las que corregí o descarté están en [registro_pruebas.md](registro_pruebas.md). El agente trabajó en una rama aparte (`semana6-revision`), con un commit por cada corrección, y revisé los cambios antes de subirlos. Todo lo que sugirió lo comprobé con las pruebas y el linter. En [bitacora_ia.md](bitacora_ia.md) está qué acepté, qué cambié y qué rechacé, y en [revision_seguridad.md](revision_seguridad.md) está cuáles hallazgos de la IA eran reales y cuáles no.
 
 ## 8. Autor y licencia
 

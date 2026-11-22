@@ -132,3 +132,51 @@ Asistente usado: Claude (Anthropic), en modo agente, trabajando en la rama `sema
 | Aceptadas | 1 |
 | Aceptadas con cambios | 2 |
 | Rechazadas | 1 |
+
+## Semana 7: suite de pruebas y registro de pruebas
+
+Asistente usado: Claude (Anthropic), en modo agente, trabajando en la rama `semana7-pruebas`.
+
+### Entrada 11
+
+- **Fecha:** 2026-11-22
+- **Prompt o sugerencia:** «Te doy la regla de la HU-03 y el contrato de `ordenarPendientes`. Propón casos de prueba para `validarOrden`, `compararOrdenes` y `ordenarPendientes` usando particiones de equivalencia (incluidas las inválidas), valores límite (el último valor de una partición y el primero de la siguiente) y una tabla de decisión para las funciones que combinan condiciones. Dime de dónde sale cada esperado y qué partes de la regla no están claras.»
+- **Decisión:** Aceptada con cambios
+- **Por qué:** Revisé la propuesta con las cinco preguntas. Particiones y límites: estaban las tres prioridades válidas, las inválidas y los bordes de la hora (00:00, 00:59 / 00:60, 19:59 / 20:00, 23:59 / 24:00 y 23:60). Origen del esperado: todos salen del contrato del README. Ambigüedades: quedaron 4 anotadas (mayúsculas o espacios en la prioridad, qué error se muestra si hay dos problemas, si un arreglo cuenta como orden y el número de orden sin validar). Reglas inventadas: la IA sugería probar qué pasa con un arreglo `[]`, pero cualquier esperado que pusiera iba a salir de lo que hace el código y no de la regla, así que no le hice prueba y lo dejé como pregunta.
+- **Verificación:** Cada esperado de la tabla lo saqué del contrato del README, no de correr el código. Las tablas y las 4 ambigüedades están en la sección 1 de `registro_pruebas.md`.
+- **Commit relacionado:** `22e3bdf` Pruebas semana 7
+
+### Entrada 12
+
+- **Fecha:** 2026-11-22
+- **Prompt o sugerencia:** «Escribe las pruebas con Jest en `tests/reglasHU03.test.js` a partir de las reglas y de mi tabla revisada: `test.each` con un comentario por fila, `toThrow` con el tipo de error exacto y el mensaje, esperados fijos que salgan de la regla y los datos de `tests/datos/ordenesSinteticas.js` en un `beforeEach`. No modifiques el código de `src/`.» La IA entregó 33 pruebas y todas pasaban.
+- **Decisión:** Aceptada con cambios
+- **Por qué:** Que pasaran no quería decir que estuvieran bien. En `compararOrdenes` pedía `-2` y `2` exactos: eso sale de restar los pesos en el código, pero la regla solo dice quién va primero. Lo cambié para comparar el signo. Descarté 4 pruebas (2 redundantes y 2 débiles) y fortalecí 3 que solo revisaban el tipo de error y no el mensaje. El detalle está en la sección 2 de `registro_pruebas.md`.
+- **Verificación:** Para comprobar que el `-2` venía del código, cambié el código para que devolviera `-1`, que sigue cumpliendo la regla. Fallaron 2 pruebas del borrador y ninguna de la versión revisada. Después lo deshice con `git restore`. Al final pasan las 56 pruebas.
+- **Commit relacionado:** `22e3bdf` Pruebas semana 7
+
+### Entrada 13
+
+- **Fecha:** 2026-11-22
+- **Prompt o sugerencia:** «Genera 6 órdenes de prueba sintéticas para un taller de celulares en Neiva: nombres inventados, teléfonos ficticios con el prefijo 300 000 00xx, equipos y fallas reales de taller y barrios de Neiva. Incluye casos difíciles: tildes, ñ, apóstrofo, una falla vacía, un costo en cero, horas 00:00 y 23:59 y dos órdenes empatadas en prioridad y hora.»
+- **Decisión:** Aceptada con cambios
+- **Por qué:** Los datos venían bien, pero los dejé dentro de una función que devuelve una lista nueva cada vez (`crearOrdenesSinteticas()`), en vez de una lista fija. Así una prueba que cambia una orden, como la de la hora 24:00, no daña los datos de las demás. Revisé que ningún nombre ni teléfono fuera de una persona real; no puse datos míos ni de mi familia.
+- **Verificación:** El orden esperado de las 6 órdenes lo calculé a mano con la regla (Alta, Media, Baja y luego la hora) antes de correr la prueba, y coincidió. La prueba de los datos comprueba que las tildes, la ñ, el apóstrofo, el texto vacío y el 0 salen iguales.
+- **Commit relacionado:** `22e3bdf` Pruebas semana 7
+
+### Entrada 14
+
+- **Fecha:** 2026-11-22
+- **Prompt o sugerencia:** Le pedí al agente que metiera 9 errores a propósito en `ordenarPendientes.js`, uno a la vez, que corriera las pruebas después de cada uno y que los deshiciera con `git restore`. Primero con las pruebas de la semana 6 y después con las de la semana 7.
+- **Decisión:** Aceptada
+- **Por qué:** Es la forma de saber si las pruebas protegen de verdad. Con las pruebas de la semana 6, 2 errores pasaban sin que nada fallara: aceptar 24:00 y aceptar 23:60. Por eso agregué los límites de la hora.
+- **Verificación:** Con la suite de la semana 7 los 9 errores hacen fallar al menos una prueba. `git status` quedó limpio después de cada error. La tabla está en la sección 3 de `registro_pruebas.md`.
+- **Commit relacionado:** `22e3bdf` Pruebas semana 7
+
+### Resumen de la semana 7
+
+| Decisión | Cantidad |
+|---|---|
+| Aceptadas | 1 |
+| Aceptadas con cambios | 3 |
+| Rechazadas | 0 |
