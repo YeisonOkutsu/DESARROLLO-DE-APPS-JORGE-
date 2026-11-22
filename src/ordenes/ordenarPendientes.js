@@ -95,4 +95,4 @@ function ordenarPendientes(ordenes) {
   return [...ordenes].sort(compararOrdenes);
 }
 
-module.exports = { ordenarPendientes, PESO_PRIORIDAD };
+module.exports = { ordenarPendientes, validarOrden, compararOrdenes, PESO_PRIORIDAD };
