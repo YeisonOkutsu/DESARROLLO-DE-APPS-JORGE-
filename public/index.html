@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Smartfix · Cola de atención</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #F7F6F2; color: #16213A; margin: 0; }
+    header { background: #16213A; color: #F7F6F2; padding: 20px 32px; }
+    header h1 { margin: 0; font-size: 26px; }
+    header p { margin: 4px 0 0; color: #C9D2E3; }
+    main { max-width: 860px; margin: 24px auto; padding: 0 16px; }
+    section { background: #fff; border: 1px solid #CFCABD; border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+    h2 { margin: 0 0 12px; font-size: 20px; }
+    form { display: flex; gap: 12px; flex-wrap: wrap; align-items: end; }
+    label { display: flex; flex-direction: column; font-size: 14px; gap: 4px; }
+    input, select, button { font-size: 16px; padding: 8px; }
+    button { background: #E07A2F; color: #16213A; border: 0; border-radius: 6px; font-weight: bold; cursor: pointer; }
+    #mensaje { margin-top: 12px; min-height: 22px; font-weight: bold; }
+    .error { color: #A61B1B; }
+    .ok { color: #1E6B3A; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 10px; border-bottom: 1px solid #E4E0D6; }
+    th { background: #ECE9E1; }
+    .Alta { color: #A61B1B; font-weight: bold; }
+    .Media { color: #A84A12; font-weight: bold; }
+    .Baja { color: #3E4A5E; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Smartfix · Cola de atención de los técnicos</h1>
+    <p>HU-03: órdenes pendientes ordenadas por prioridad y luego por hora de llegada</p>
+  </header>
+  <main>
+    <section>
+      <h2>Registrar una orden pendiente</h2>
+      <form id="formulario">
+        <label>Número <input id="numero" placeholder="SF-0210"></label>
+        <label>Prioridad
+          <select id="prioridad">
+            <option>Alta</option><option selected>Media</option><option>Baja</option>
+            <option>Urgentísima</option>
+          </select>
+        </label>
+        <label>Hora de llegada <input id="hora" placeholder="HH:MM" value="11:15"></label>
+        <button type="submit">Agregar</button>
+      </form>
+      <p id="mensaje"></p>
+    </section>
+    <section>
+      <h2>Cola de atención</h2>
+      <table>
+        <thead><tr><th>Turno</th><th>Orden</th><th>Prioridad</th><th>Llegó</th></tr></thead>
+        <tbody id="cola"></tbody>
+      </table>
+      <p id="vacia" hidden>No hay órdenes pendientes</p>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

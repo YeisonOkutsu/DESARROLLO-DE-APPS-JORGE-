@@ -91,7 +91,23 @@ npm ci
 
 ## 4. Ejecución
 
-Todavía no hay servidor, porque la HU-03 es la primera parte de la API. Para ver la función trabajando con las órdenes del escenario 1:
+### Demo local (semana 8)
+
+```bash
+npm ci
+npm start
+```
+
+Después abre http://localhost:3000 en el navegador. La página muestra la cola de los técnicos con las órdenes del escenario 1 y tiene un formulario para agregar órdenes. Las órdenes nuevas se ubican en su lugar según la prioridad y la hora. Si eliges la prioridad «Urgentísima» o escribes una hora como «9:00», la API responde 400 y el error se ve en rojo. Las órdenes viven en memoria: al detener el servidor (Ctrl + C) se pierden. Para usar otro puerto: `PORT=4000 npm start` (en PowerShell: `$env:PORT=4000; npm start`).
+
+La API tiene dos rutas:
+
+- `GET /api/ordenes/pendientes`: devuelve la cola ordenada con `ordenarPendientes`.
+- `POST /api/ordenes`: recibe `{ numero, prioridad, horaLlegada }`, lo valida con `validarOrden` y responde 201, o 400 con `{ error }`.
+
+### Ejemplo por consola
+
+Para ver la función sola, con las órdenes del escenario 1:
 
 ```bash
 npm run ejemplo
@@ -113,7 +129,7 @@ npm test
 npm run lint
 ```
 
-- `npm test` corre las 56 pruebas. En `tests/ordenarPendientes.test.js` están las de las semanas 5 y 6: los casos normales, los casos límite y los de error de la HU-03, más las pruebas de abuso (datos mal formados y prioridades tramposas como `__proto__` o `toString`). En `tests/reglasHU03.test.js` están las de la semana 7, diseñadas con particiones de equivalencia, valores límite y tablas de decisión; usan los datos sintéticos de `tests/datos/ordenesSinteticas.js`. El diseño de cada caso está en [registro_pruebas.md](registro_pruebas.md).
+- `npm test` corre las 63 pruebas. En `tests/api.test.js` están las 7 de la API de la demo (semana 8), hechas con supertest. En `tests/ordenarPendientes.test.js` están las de las semanas 5 y 6: los casos normales, los casos límite y los de error de la HU-03, más las pruebas de abuso (datos mal formados y prioridades tramposas como `__proto__` o `toString`). En `tests/reglasHU03.test.js` están las de la semana 7, diseñadas con particiones de equivalencia, valores límite y tablas de decisión; usan los datos sintéticos de `tests/datos/ordenesSinteticas.js`. El diseño de cada caso está en [registro_pruebas.md](registro_pruebas.md).
 - `npx jest --verbose` muestra el nombre de cada prueba (es el equivalente de `pytest -v`).
 - `npm run lint` revisa el código con ESLint, incluyendo reglas de seguridad. La configuración está en `eslint.config.js` y debe terminar sin avisos.
 - `npm audit` busca fallas conocidas en las librerías que usa el proyecto. Lo que salió está explicado en los pendientes del informe.
@@ -136,13 +152,19 @@ El archivo `.github/workflows/ci.yml` hace que GitHub Actions, en cada push y en
 ├── eslint.config.js          Configuración del linter
 ├── package.json
 ├── package-lock.json
+├── public/
+│   ├── index.html            Página de la demo local
+│   └── app.js                Pide la cola a la API y la pinta (solo textContent)
 ├── src/
+│   ├── app.js                API de Express: rutas de la cola y del registro de órdenes
+│   ├── servidor.js           Arranca la demo con npm start
 │   ├── ejemplo.js            Ejemplo que se ejecuta con npm run ejemplo
 │   └── ordenes/
 │       └── ordenarPendientes.js
 └── tests/
     ├── ordenarPendientes.test.js   Pruebas de las semanas 5 y 6
     ├── reglasHU03.test.js          Pruebas de las reglas (semana 7)
+    ├── api.test.js                 Pruebas de la API de la demo (semana 8)
     └── datos/
         └── ordenesSinteticas.js    Datos sintéticos del taller (sin personas reales)
 ```

@@ -212,10 +212,19 @@ Asistente usado: Claude (Anthropic), en modo agente, trabajando en la rama `entr
 - **Verificación:** Lo encontré al comprobar los enlaces del informe final, con `git show --stat bba2fd5` y `git check-ignore -v .env.example`. Agregué `!.env.example` al `.gitignore` y comprobé con `git status` que `.env.example` ahora sí se sube y `.env` sigue ignorado.
 - **Commit relacionado:** `7088dac` Corrección: el .env.example nunca se subió porque .gitignore lo tapaba
 
+### Entrada 18
+
+- **Fecha:** 2026-11-25
+- **Prompt o sugerencia:** «En la sustentación tengo que mostrar el proyecto funcionando en local. Haz una demo pequeña de la HU-03 con Express, como dice mi diseño: una ruta que devuelva la cola ordenada, otra para registrar órdenes validadas con `validarOrden`, las órdenes en memoria y una página en JavaScript puro que use solo `textContent`. No cambies `ordenarPendientes.js` ni las pruebas que ya existen. Agrega pruebas de la API con supertest y fija las versiones.»
+- **Decisión:** Aceptada
+- **Por qué:** Expone la HU-03 en una ruta de la API, que era un pendiente del informe, sin tocar la lógica que ya estaba probada. Escribir la página con `textContent` deja resuelto el pendiente P-03 en esta pantalla: un número de orden con `<script>` se ve como texto y no se ejecuta. Express 5.3.0 y supertest 7.3.2 quedaron con la versión exacta, y `npm audit --omit=dev` no reporta vulnerabilidades en lo que usa la aplicación.
+- **Verificación:** 7 pruebas nuevas en `tests/api.test.js` (63 en total, todas pasan) y ESLint sin avisos, con las globales del navegador para `public/`. Arranqué el servidor y probé con `curl`: la orden SF-0210 (Alta, 11:15) quedó segunda, después de SF-0201 (Alta, 10:30); «Urgentísima» y un JSON mal formado devolvieron 400. Abrí la página en el navegador y la cola salió en el orden correcto.
+- **Commit relacionado:** el commit de la demo local
+
 ### Resumen de la semana 8
 
 | Decisión | Cantidad |
 |---|---|
-| Aceptadas | 1 |
+| Aceptadas | 2 |
 | Aceptadas con cambios | 1 |
 | Rechazadas | 1 |
