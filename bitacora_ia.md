@@ -180,3 +180,42 @@ Asistente usado: Claude (Anthropic), en modo agente, trabajando en la rama `sema
 | Aceptadas | 1 |
 | Aceptadas con cambios | 3 |
 | Rechazadas | 0 |
+
+## Semana 8: pipeline e informe final
+
+Asistente usado: Claude (Anthropic), en modo agente, trabajando en la rama `entrega-final`.
+
+### Entrada 15
+
+- **Fecha:** 2026-11-25
+- **Prompt o sugerencia:** «Mi proyecto no tiene pipeline y la entrega final pide la última ejecución. Arma un workflow de GitHub Actions que en cada push instale las dependencias con las versiones del `package-lock.json`, pase el linter y corra las pruebas. Que sea corto y que yo lo pueda explicar paso por paso. No cambies el código ni las pruebas.» El agente creó `.github/workflows/ci.yml` con cinco pasos: descargar el código, instalar Node.js 20, `npm ci`, `npm run lint` y `npm test`.
+- **Decisión:** Aceptada
+- **Por qué:** Usa `npm ci` y no `npm install`, así que instala exactamente las versiones fijadas en la semana 6. Corre lo mismo que corro yo en mi computador, solo que sin que se me olvide. Node.js 20 cumple lo que pide `package.json` (`>=18.18`).
+- **Verificación:** El agente corrió los mismos tres comandos en una copia limpia del repositorio: instalación sin errores, ESLint sin avisos y las 56 pruebas pasando. Después de subir la rama, revisé en la pestaña Actions que la ejecución «CI» saliera en verde.
+- **Commit relacionado:** `7cf5c2a` Pipeline de integración continua (GitHub Actions)
+
+### Entrada 16
+
+- **Fecha:** 2026-11-25
+- **Prompt o sugerencia:** «Con la plantilla `informe_final_integrador.md`, mis documentos de las semanas 1 a 4 y las ramas de las semanas 5 a 7, arma el borrador del informe final. Cada afirmación debe tener su enlace al repositorio, los casos de la sección 4 deben ser errores reales de la IA que estén en la bitácora y no inventes nada que no esté en mis archivos.»
+- **Decisión:** Aceptada con cambios
+- **Por qué:** El borrador sacó los casos de las bitácoras y de los informes de las semanas 5 a 7, donde hay una prueba o un comando que demuestra el error. Los documentos de las semanas 1 a 4 se subieron a `docs/` para poder enlazarlos. Escribí con mis palabras la sección de aprendizajes, y dejé claro que el clasificador con IA quedó pendiente y que la entrevista fue simulada.
+- **Verificación:** Comprobé que cada número del informe coincide con el repositorio (56 pruebas, 14 y 42 por archivo, cobertura del 100 %, totales de la matriz 86, 84 y 90) y que cada commit enlazado existe.
+- **Commit relacionado:** el commit que agrega `informe_final.md`
+
+### Entrada 17
+
+- **Fecha:** 2026-11-25
+- **Prompt o sugerencia:** Ninguno nuevo. Es una corrección a lo que el agente dio por hecho en la entrada 10: el commit `bba2fd5` dice que agregó `.env.example`, y en el informe de seguridad el hallazgo H-06 aparecía como corregido.
+- **Decisión:** Rechazada (lo que se dio por hecho no estaba hecho)
+- **Por qué:** La regla `.env.*` del `.gitignore` también ignoraba el `.env.example`, así que el archivo nunca entró al repositorio. El commit solo trae `package.json` y `src/ejemplo.js`.
+- **Verificación:** Lo encontré al comprobar los enlaces del informe final, con `git show --stat bba2fd5` y `git check-ignore -v .env.example`. Agregué `!.env.example` al `.gitignore` y comprobé con `git status` que `.env.example` ahora sí se sube y `.env` sigue ignorado.
+- **Commit relacionado:** `7088dac` Corrección: el .env.example nunca se subió porque .gitignore lo tapaba
+
+### Resumen de la semana 8
+
+| Decisión | Cantidad |
+|---|---|
+| Aceptadas | 1 |
+| Aceptadas con cambios | 1 |
+| Rechazadas | 1 |

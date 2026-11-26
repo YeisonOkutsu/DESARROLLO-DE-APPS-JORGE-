@@ -118,6 +118,10 @@ npm run lint
 - `npm run lint` revisa el código con ESLint, incluyendo reglas de seguridad. La configuración está en `eslint.config.js` y debe terminar sin avisos.
 - `npm audit` busca fallas conocidas en las librerías que usa el proyecto. Lo que salió está explicado en los pendientes del informe.
 
+### Pipeline (semana 8)
+
+El archivo `.github/workflows/ci.yml` hace que GitHub Actions, en cada push y en cada pull request, instale las dependencias con `npm ci`, corra `npm run lint` y corra `npm test` en Node.js 20. Si algo falla, la ejecución sale en rojo. Las ejecuciones se ven en la pestaña **Actions** del repositorio: https://github.com/YeisonOkutsu/DESARROLLO-DE-APPS-JORGE-/actions/workflows/ci.yml
+
 ## 6. Estructura
 
 ```
