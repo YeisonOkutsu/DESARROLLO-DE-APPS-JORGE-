@@ -1,0 +1,29 @@
+# Pipeline del Clasificador Smartfix: cada vez que se sube código o se abre
+# un pull request, GitHub instala el proyecto, pasa el linter y corre las pruebas.
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  revisar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Instalar dependencias (versiones exactas del package-lock.json)
+        run: npm ci
+
+      - name: Linter (ESLint con reglas de seguridad)
+        run: npm run lint
+
+      - name: Pruebas (Jest)
+        run: npm test
