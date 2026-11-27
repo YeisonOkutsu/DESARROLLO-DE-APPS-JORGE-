@@ -109,11 +109,34 @@ El dilema más importante fue la entrevista de la semana 3. La tarea pedía habl
 
 ## 7. Aprendizajes
 
-Ahora sé escribir el contrato de una función y sus pruebas antes del código, y armar una tabla de casos con particiones de equivalencia, valores límite y tablas de decisión. También sé sembrar errores a propósito para medir si mis pruebas sirven, configurar un linter con reglas de seguridad, revisar dependencias con `npm audit` y montar un pipeline que hace todo eso solo en cada push. Lo más importante que aprendí es que el código de la IA hay que ejecutarlo y probarlo, no solo leerlo: el error de `sort()` y las pruebas que pasaban sin probar la regla parecían correctos a simple vista.
+### Lo que ahora sé hacer
 
-Confié de más en la IA en las semanas 3 y 4. Le dejé hacer casi todo: la entrevista simulada, las historias de usuario y el documento de diseño. Esos documentos quedaron bien presentados, pero los verifiqué con menos fuerza que el código, porque en un documento no hay una prueba que falle y avise. También confié de más en un supuesto mío: en la semana 5 rechacé validar el formato de la hora porque supuse que siempre llegaría bien, y en la semana 6 tuve que cambiar esa decisión.
+Antes de este seminario escribía el código primero y lo probaba a mano al final. Ahora sé escribir primero el contrato de una función (qué recibe, qué devuelve y qué errores lanza) y sus pruebas, y solo después el código, con el ciclo rojo, verde y refactor. Sé diseñar casos de prueba con particiones de equivalencia, valores límite y tablas de decisión, en vez de inventarlos al azar, y sembrar errores a propósito para medir si mis pruebas sirven: con las pruebas de la semana 6 se escapaban 2 de 9 errores, y con las de la semana 7 se detectan los 9. También sé configurar ESLint con reglas de seguridad, revisar las dependencias con `npm audit` y fijar sus versiones, montar un pipeline en GitHub Actions que repite todo eso en cada push y exponer la lógica en una API de Express con su página de demo.
 
-Si empezara de nuevo, haría la entrevista con un taller real, empezaría por el clasificador, que es el centro del problema, aunque fuera con palabras clave, y montaría el pipeline desde la semana 5 y no al final.
+### Los errores que tuvimos y cómo se corrigieron
+
+Los errores de la IA casi nunca se veían a simple vista, porque el código y las pruebas que entregaba parecían correctos:
+
+- En la semana 2, el código del prompt 1 redondeaba 2.675 a 2.67 en vez de 2.68 por usar decimales flotantes. Se corrigió exigiendo `Decimal` en el prompt.
+- En la semana 5, `ordenes.sort()` cambiaba la lista original, y con `prioridad in pesos` una prioridad «toString» pasaba como válida. Las dos cosas las atrapó una prueba y se corrigieron con `[...ordenes].sort()` y `Object.hasOwn`.
+- En la semana 6, 3 de los 7 hallazgos de la revisión con IA eran falsos positivos, y la IA no vio que la cola debería verla solo el técnico. Además propuso subir a Jest 30, que pasaba de 6 avisos de seguridad a 19.
+- En la semana 7, la IA escribió pruebas que exigían el número `-2` exacto y le faltaban los límites de la hora (24:00 y 23:60). Todas pasaban, pero no probaban la regla.
+- En la semana 8, revisando los enlaces de este informe, encontré que el `.env.example` que el agente dijo haber subido en la semana 6 nunca llegó al repositorio, porque el `.gitignore` lo tapaba.
+
+También tuve errores propios. En la semana 5 rechacé validar el formato de la hora porque supuse que siempre llegaría bien, y en la semana 6 una hora como «9:00» se ordenaba mal, así que tuve que cambiar esa decisión. Dejé el clasificador con IA, que es el centro del problema, para el final, y no alcancé a construirlo. Y monté el pipeline en la última semana, cuando debió estar desde la primera funcionalidad.
+
+### Cómo aprendí a usar bien la IA
+
+- **Darle contexto, no solo pedirle.** Un prompt como «ayúdame con la tarea» da respuestas genéricas. Funcionó mejor darle un rol, el contexto del proyecto, la tarea exacta, las restricciones (qué no tocar, qué librerías no agregar) y el formato de la respuesta. En la semana 6 también le pedí separar los problemas seguros de las sospechas.
+- **Darle primero el contrato y las pruebas.** Cuando la IA programa contra pruebas que yo escribí antes, sus errores fallan en rojo. Cuando escribe el código y las pruebas al mismo tiempo, puede equivocarse en los dos lados y todo sale en verde.
+- **Ejecutar siempre y no creerle a la primera.** Cada respuesta la comprobé con una prueba, con `node -e`, con `npm audit` o con `git show --stat`. Una respuesta segura de la IA no es una respuesta verificada, y el mensaje de un commit no prueba lo que el commit trae.
+- **Usarla como segundo revisor, no como el único.** La IA encontró problemas que yo no vi, pero también inventó problemas y no entendió el negocio. Lo que la regla no aclara, como si «alta» en minúsculas cuenta, es una pregunta para el cliente, no para la IA.
+- **Trabajar con el agente en ramas separadas** y revisar su diff antes de integrar, para que no pueda dañar lo que ya funciona.
+- **Registrar y declarar.** La bitácora (18 entradas) dice qué acepté, qué corregí y qué rechacé. Nunca pegué datos reales ni claves en un prompt, y declaré el uso de la IA, incluida la entrevista simulada.
+
+### En qué confié de más y qué haría distinto
+
+Confié de más en la IA en las semanas 3 y 4. Le dejé hacer casi todo: la entrevista simulada, las historias de usuario y el documento de diseño. Esos documentos quedaron bien presentados, pero los verifiqué con menos fuerza que el código, porque en un documento no hay una prueba que falle y avise. Si empezara de nuevo, haría la entrevista con un taller real de Neiva, empezaría por el clasificador aunque fuera con palabras clave, y montaría el pipeline desde la semana 5. La conclusión más importante para mí es que la IA me ayudó a avanzar mucho más rápido, pero lo que me dijo cuándo podía confiar en ella fueron las pruebas.
 
 ## 8. Anexos
 

@@ -199,7 +199,7 @@ Asistente usado: Claude (Anthropic), en modo agente, trabajando en la rama `entr
 - **Fecha:** 2026-11-25
 - **Prompt o sugerencia:** «Con la plantilla `informe_final_integrador.md`, mis documentos de las semanas 1 a 4 y las ramas de las semanas 5 a 7, arma el borrador del informe final. Cada afirmación debe tener su enlace al repositorio, los casos de la sección 4 deben ser errores reales de la IA que estén en la bitácora y no inventes nada que no esté en mis archivos.»
 - **Decisión:** Aceptada con cambios
-- **Por qué:** El borrador sacó los casos de las bitácoras y de los informes de las semanas 5 a 7, donde hay una prueba o un comando que demuestra el error. Los documentos de las semanas 1 a 4 se subieron a `docs/` para poder enlazarlos. Escribí con mis palabras la sección de aprendizajes, y dejé claro que el clasificador con IA quedó pendiente y que la entrevista fue simulada.
+- **Por qué:** El borrador sacó los casos de las bitácoras y de los informes de las semanas 5 a 7, donde hay una prueba o un comando que demuestra el error. Los documentos de las semanas 1 a 4 se subieron a `docs/` para poder enlazarlos. Dejé claro que el clasificador con IA quedó pendiente y que la entrevista fue simulada. Después le pedí al agente que redactara mejor la sección de aprendizajes con los errores de la bitácora, las mejoras y lo aprendido sobre el uso de la IA. La leí y la revisé para poder sustentarla con mis palabras.
 - **Verificación:** Comprobé que cada número del informe coincide con el repositorio (56 pruebas, 14 y 42 por archivo, cobertura del 100 %, totales de la matriz 86, 84 y 90) y que cada commit enlazado existe.
 - **Commit relacionado:** el commit que agrega `informe_final.md`
 
