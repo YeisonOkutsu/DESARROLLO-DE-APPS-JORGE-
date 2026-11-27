@@ -98,7 +98,7 @@ npm ci
 npm start
 ```
 
-Después abre http://localhost:3000 en el navegador. La página muestra la cola de los técnicos con las órdenes del escenario 1 y tiene un formulario para agregar órdenes. Las órdenes nuevas se ubican en su lugar según la prioridad y la hora. Si eliges la prioridad «Urgentísima» o escribes una hora como «9:00», la API responde 400 y el error se ve en rojo. Las órdenes viven en memoria: al detener el servidor (Ctrl + C) se pierden. Para usar otro puerto: `PORT=4000 npm start` (en PowerShell: `$env:PORT=4000; npm start`).
+Después abre http://localhost:3000 en el navegador. La página muestra la cola de los técnicos con las órdenes del escenario 1 y tiene un formulario para agregar órdenes. Las órdenes nuevas se ubican en su lugar según la prioridad y la hora. El número de la orden hay que escribirlo (el texto gris es solo un ejemplo) y la hora se elige con el selector de hora del navegador, que siempre la manda como HH:MM en formato de 24 horas. Si eliges la prioridad «Urgentísima», la API responde 400 y el error se ve en rojo. Las órdenes viven en memoria: al detener el servidor (Ctrl + C) se pierden. Para usar otro puerto: `PORT=4000 npm start` (en PowerShell: `$env:PORT=4000; npm start`).
 
 La API tiene dos rutas:
 

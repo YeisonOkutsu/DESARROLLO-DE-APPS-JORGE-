@@ -17,6 +17,7 @@
     input, select, button { font-size: 16px; padding: 8px; }
     button { background: #E07A2F; color: #16213A; border: 0; border-radius: 6px; font-weight: bold; cursor: pointer; }
     #mensaje { margin-top: 12px; min-height: 22px; font-weight: bold; }
+    input::placeholder { color: #9AA3B2; font-style: italic; }
     .error { color: #A61B1B; }
     .ok { color: #1E6B3A; }
     table { width: 100%; border-collapse: collapse; }
@@ -36,14 +37,14 @@
     <section>
       <h2>Registrar una orden pendiente</h2>
       <form id="formulario">
-        <label>Número <input id="numero" placeholder="SF-0210"></label>
+        <label>Número de la orden <input id="numero" placeholder="Escríbelo, ej. SF-0210" required maxlength="20"></label>
         <label>Prioridad
           <select id="prioridad">
             <option>Alta</option><option selected>Media</option><option>Baja</option>
             <option>Urgentísima</option>
           </select>
         </label>
-        <label>Hora de llegada <input id="hora" placeholder="HH:MM" value="11:15"></label>
+        <label>Hora de llegada <input id="hora" type="time" value="11:15" required></label>
         <button type="submit">Agregar</button>
       </form>
       <p id="mensaje"></p>
