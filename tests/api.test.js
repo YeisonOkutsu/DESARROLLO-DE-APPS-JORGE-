@@ -56,6 +56,16 @@ describe('API de la cola de atención (HU-03)', () => {
     expect(respuesta.body.error).toBe('El número de la orden es obligatorio (máximo 20)');
   });
 
+  test('rechaza con 400 un número de orden que ya está en la cola', async () => {
+    const app = crearApp(ESCENARIO_1);
+    const repetida = { numero: 'SF-0201', prioridad: 'Baja', horaLlegada: '12:00' };
+    const respuesta = await request(app).post('/api/ordenes').send(repetida);
+    expect(respuesta.status).toBe(400);
+    expect(respuesta.body.error).toBe('La orden SF-0201 ya está en la cola');
+    const cola = await request(app).get('/api/ordenes/pendientes');
+    expect(cola.body).toHaveLength(3);
+  });
+
   test('crearApp copia las órdenes iniciales y no cambia la lista que recibe', async () => {
     const iniciales = ESCENARIO_1.map((o) => ({ ...o }));
     const app = crearApp(iniciales);

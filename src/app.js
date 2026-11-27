@@ -32,6 +32,9 @@ function crearApp(ordenesIniciales = []) {
       return res.status(400).json({ error: 'El número de la orden es obligatorio (máximo 20)' });
     }
     const orden = { numero: numero.trim(), prioridad, horaLlegada };
+    if (pendientes.some((pendiente) => pendiente.numero === orden.numero)) {
+      return res.status(400).json({ error: `La orden ${orden.numero} ya está en la cola` });
+    }
     try {
       validarOrden(orden, pendientes.length);
     } catch (error) {

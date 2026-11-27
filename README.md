@@ -129,7 +129,7 @@ npm test
 npm run lint
 ```
 
-- `npm test` corre las 63 pruebas. En `tests/api.test.js` están las 7 de la API de la demo (semana 8), hechas con supertest. En `tests/ordenarPendientes.test.js` están las de las semanas 5 y 6: los casos normales, los casos límite y los de error de la HU-03, más las pruebas de abuso (datos mal formados y prioridades tramposas como `__proto__` o `toString`). En `tests/reglasHU03.test.js` están las de la semana 7, diseñadas con particiones de equivalencia, valores límite y tablas de decisión; usan los datos sintéticos de `tests/datos/ordenesSinteticas.js`. El diseño de cada caso está en [registro_pruebas.md](registro_pruebas.md).
+- `npm test` corre las 64 pruebas. En `tests/api.test.js` están las 8 de la API de la demo (semana 8), hechas con supertest. En `tests/ordenarPendientes.test.js` están las de las semanas 5 y 6: los casos normales, los casos límite y los de error de la HU-03, más las pruebas de abuso (datos mal formados y prioridades tramposas como `__proto__` o `toString`). En `tests/reglasHU03.test.js` están las de la semana 7, diseñadas con particiones de equivalencia, valores límite y tablas de decisión; usan los datos sintéticos de `tests/datos/ordenesSinteticas.js`. El diseño de cada caso está en [registro_pruebas.md](registro_pruebas.md).
 - `npx jest --verbose` muestra el nombre de cada prueba (es el equivalente de `pytest -v`).
 - `npm run lint` revisa el código con ESLint, incluyendo reglas de seguridad. La configuración está en `eslint.config.js` y debe terminar sin avisos.
 - `npm audit` busca fallas conocidas en las librerías que usa el proyecto. Lo que salió está explicado en los pendientes del informe.
